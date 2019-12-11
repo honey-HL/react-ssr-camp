@@ -1,5 +1,5 @@
 const path = require('path');
-// 服务端的webpack
+// 客户端的webpack
 module.exports = {
     mode: 'development',
     // 客户端入口
