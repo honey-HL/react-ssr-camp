@@ -7,7 +7,7 @@ module.exports = {
     entry: './server/index.js', // 项目入口
     externals: [nodeExternals()], 
     output: { // 输出
-        filename: 'bundle.js', // node编译输出文件
+        filename: 'bundle.js', // node编译输出文件 
         path: path.resolve(__dirname, 'build')
     },
     // 支持babel
