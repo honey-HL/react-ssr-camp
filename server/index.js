@@ -27,32 +27,16 @@ app.get('*', (req, res) => {
             }
         }
     })
-    // use `some` to imitate `<Switch>` behavior of selecting only
-    // the first to match
-    // routes.some(route => {
-    //     // use `matchPath` here
-    //     const match = matchPath(req.path, route);
-    //     if (match) promises.push(route.loadData(match));
-    //     return match;
-    // });
+
 
     // const Page = <App title="开课吧"></App>
 
     const reflect = p => p.then(v => 
         ({v, status: "fulfilled" }),e => ({e, status: "rejected" })
     );
-
-    // 等待所有网络请求结束后在渲染
-    // Promise.all(promises).map(p => p.catch(e => e))
-    // .then (res => {
-        
-    // })
-    // .catch(e => {
-    //     res.send('此处暂无数据')
-    // })
-    // .finally(() => {
-    //     res.send('正在加载')
-    // })
+    /*
+    Promise.all等待所有网络请求结束后在渲染
+    */
     Promise.all(promises.map(reflect)).then(results => {
         // babel把jsx解析成虚拟dom   renderToString把react组建解析成html
         var success = results.filter(x => x.status === "fulfilled");
@@ -94,5 +78,5 @@ app.get('*', (req, res) => {
 })
 
 app.listen(9093, ()=> {
-    console.log('监听完毕');
+    console.log('server.js 9093监听完毕');
 })
