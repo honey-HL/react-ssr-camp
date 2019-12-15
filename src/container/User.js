@@ -5,6 +5,15 @@ import {getUserInfo} from '../store/user'
 
 
 function User (props) {
+     useEffect(() => {
+        // 异步数据 首页显示
+        console.log('user props', props) // props的userinfo来源于store
+        let keys = Object.keys(props.userinfo);
+         // 如果props里面没有userinfo，就从客户端发起请求去获取数据
+        if (!keys.length) {
+            props.getUserInfo()
+        }
+    }, [])
     return <div>
         <h1>
             你好{props.userinfo.name},你们最棒的是{props.userinfo.best}
@@ -12,9 +21,10 @@ function User (props) {
     </div>
 }
 
-User.loadData = (store) => {
-    return store.dispatch(getUserInfo())
-}
+// loadData挂载为了方便服务端随时调用 获取数据
+// User.loadData = (store) => {
+//     return store.dispatch(getUserInfo())
+// }
 
 
 export default connect( 
@@ -23,7 +33,7 @@ export default connect(
         return {
             userinfo: state.user.userinfo
         }
-    }
+    },
     // ({userinfo: state.user.userinfo}),
-    // {getUserInfo}
+    {getUserInfo}
 )(User);

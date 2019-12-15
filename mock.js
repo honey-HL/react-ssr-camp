@@ -3,9 +3,10 @@ let express = require('express');
 const app = express();
 
 
-app.get('/api/user/info1', (req, res) => {
+
+app.get('/api/user/info', (req, res) => { // /api/user/info
     // 支持跨域
-    res.header('Access-Control-Allow-Origin', '*')
+    // res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE')
     res.header('Content-Type', 'application/json;charset=utf-8')
     res.json({
@@ -19,7 +20,7 @@ app.get('/api/user/info1', (req, res) => {
 
 app.get('/api/course/list', (req, res) => {
     // 支持跨域
-    res.header('Access-Control-Allow-Origin', '*')
+    // res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE')
     res.header('Content-Type', 'application/json;charset=utf-8')
     res.json({
@@ -34,5 +35,5 @@ app.get('/api/course/list', (req, res) => {
 })
 
 app.listen(9090, () => {
-    console.log('mock启动完毕')
+    console.log('mock监听9090端口，启动完毕')
 })

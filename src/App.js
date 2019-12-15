@@ -22,7 +22,7 @@ export default [
         path:'/',
         component: Index,
         // loadData: Index.loadData,
-        // exact: true, // 去掉exact就不是精确匹配了
+        // exact: true, // 去掉exact就不是精确匹配了，随便路由跳到哪一个页面都能获取到index的数据
         key: 'index'
     },
     {
