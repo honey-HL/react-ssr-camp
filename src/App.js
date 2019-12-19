@@ -3,7 +3,9 @@ import {Route} from 'react-router-dom';
 import Index from './container/Index';
 import About from './container/About';
 import User from './container/User';
-
+import Notfound from './container/Notfound';
+import Login from './container/login'
+import './App.css';
 
 
 
@@ -22,7 +24,7 @@ export default [
         path:'/',
         component: Index,
         // loadData: Index.loadData,
-        // exact: true, // 去掉exact就不是精确匹配了，随便路由跳到哪一个页面都能获取到index的数据
+        exact: true, // 去掉exact就不是精确匹配了，随便路由跳到哪一个页面都能获取到index的数据
         key: 'index'
     },
     {
@@ -36,5 +38,16 @@ export default [
         component: User,
         exact: true,
         key: 'user'
+    },
+    {
+        key: 'login',
+        path:'/login',
+        exact: true,
+        component:Login
+    },
+    {
+        key: '404',
+        exact: true,
+        component:Notfound
     }
 ]

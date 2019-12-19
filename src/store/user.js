@@ -17,11 +17,10 @@ const changeUserInfo = data => ({
 
 
 export const getUserInfo = server => {
-    return (dispatch, getState, axiosInstance) => {
-        return axios.get("http://localhost:9090/api/user/info")
+    return (dispatch, getState, $axios) => {
+        return $axios.get("/api/user/info")
         .then(res => {
             const {data} = res.data;
-            console.log('用户信息=>',data)
             dispatch(changeUserInfo(data))
         })
     }
