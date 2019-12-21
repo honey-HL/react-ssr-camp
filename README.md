@@ -40,7 +40,7 @@
     promises.push(promise)
 
 
->>> fifth homework
+##### fifth homework
     1.csr实现降级渲染
     if (window.__context) { 
         /*服务端渲染用hydrate  ssr(server side render)*/ 
