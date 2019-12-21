@@ -8,28 +8,49 @@ import {Provider} from 'react-redux'
 import {getServerStore} from '../src/store/store'
 import Header from '../src/component/Header'
 import proxy from 'http-proxy-middleware';
+import path from 'path'
+import fs from 'fs'
+
+
+
 
 const store = getServerStore()
 const app = express();
 app.use(express.static('public'))
 
+
+
+
 // 客户端来的api开头的请求
 app.use(
     '/api',
     proxy({ target: 'http://localhost:9090', changeOrigin: true })
-  );
-app.get('*', (req, res) => {
-    // 获取根据路由渲染出来的组件  并且拿到loadData方法  获取数据
+);
 
-    // if (req.url.startsWith('/api/')) {
-    //     // 不渲染页面使用axios转发
-    // }
+
+
+
+// csr渲染函数
+function csrRender(res) {
+    // 读取文件 返回
+    const filename = path.resolve(process.cwd(), 'public/index.csr.html')
+    const html = fs.readFileSync(filename, 'utf-8')
+    return res.send(html)
+}
+
+app.get('*', (req, res) => {
+    /*  我们可以：1、配置开关  开启CSR   2、服务器负载过高 开启CSR  **/
+    if (req.query.mode == 'csr') {
+        console.log('url参数开启CSR降级')
+        return csrRender(res)
+    }
 
     // inside a request
     const promises = [];
     routes.some(route => {
         const match = matchPath(req.path, route)
         if (match) {
+             // 获取根据路由渲染出来的组件  并且拿到loadData方法  获取数据
             const {loadData} = route.component
             if (loadData) {
                  // 包装promise 规避报错 然后push包装后的promise
@@ -45,38 +66,6 @@ app.get('*', (req, res) => {
 
     // const Page = <App title="开课吧"></App>
 
-
-    /***
-     * 规避Promise.all方法涉及到的报错阻塞（一个接口报错，后续都无法进行，页面崩溃）
-     * 方法-：reflect映射
-     * 方法二：Promise.allSettled
-     * https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled
-     * 方法二：包装promise
-     * ***/ 
-
-    /*reflect映射*/
-    // const reflect = p => p.then(v => 
-    //     ({v, status: "fulfilled" }),e => ({e, status: "rejected" })
-    // );
-    // Promise.all(promises.map(reflect)).then(res => {
-    //     var success = results.filter(x => x.status === "fulfilled");
-    //     if (success) {}
-    // })
-
-    /*Promise.allSettled*/
-    // const promise1 = Promise.resolve(3);
-    // const promise2 = new Promise((resolve, reject) => setTimeout(reject, 100, 'foo'));
-    // const promises = [promise1, promise2];
-    // Promise.allSettled(promises).
-    // then((results) => results.forEach((result) => console.log(result.status)));
-
-    /**包装promise*/
-    // const promise = new Promise((resolve, reject) => {
-    //     loadData(store).then(resolve).catch(resolve)
-    // })
-    // promises.push(promise)
-
-
     /*
     Promise.all等待所有网络请求结束后在渲染
     */
@@ -84,14 +73,16 @@ app.get('*', (req, res) => {
         // babel把jsx解析成虚拟dom   renderToString把react组建解析成html
         // var success = results.filter(x => x.status === "fulfilled");
         // if (success) {
-            const context = {}
+            const context = {
+                css: []
+            }
             const content = renderToString(
                 <Provider store={store}>
                     <StaticRouter location={req.url} context={context}>
                         {/* {App} */}
                         <Header></Header>
                         <Switch>
-                            {routes.map(route => <Route {...route}></Route>)}
+                            {routes.map(route => <Route key={route.key} {...route}></Route>)}
                         </Switch>
                     </StaticRouter>
                 </Provider>
@@ -106,12 +97,16 @@ app.get('*', (req, res) => {
                 res.redirect(301, context.url)
             }
 
+            const css = context.css.join('\n')
             // 字符串模板
             res.send(`
                 <html>
                     <head>  
                         <meta charset="utf-8"/>
                         <title>react ssr</title>
+                        <style>
+                            ${css}
+                        </style>
                     </head>
                     <body>
                         <div id="root">${content}</div>

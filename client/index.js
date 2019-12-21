@@ -16,8 +16,17 @@ const Page = (<Provider store={store}>
     <BrowserRouter>
         {/* {App} */}
         <Header></Header>
-        <Switch>{routes.map(route => <Route {...route}></Route>)}</Switch>
+        <Switch>{routes.map(route => <Route key={route.key} {...route}></Route>)}</Switch>
     </BrowserRouter>
 </Provider>)
-ReactDom.hydrate(Page, document.getElementById('root'))
+
+
+
+if (window.__context) { 
+    /*服务端渲染用hydrate  ssr(server side render)*/ 
+    ReactDom.hydrate(Page, document.getElementById('root'))
+} else { 
+    /*客户端渲染用render csr(client side render)*/ 
+    ReactDom.render(Page, document.getElementById('root'))
+}
 

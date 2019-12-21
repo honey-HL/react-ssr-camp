@@ -4,8 +4,8 @@ import Index from './container/Index';
 import About from './container/About';
 import User from './container/User';
 import Notfound from './container/Notfound';
-import Login from './container/login'
-import './App.css';
+import Login from './container/Login'
+// import './App.css';
 
 
 

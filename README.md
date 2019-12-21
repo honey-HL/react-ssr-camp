@@ -11,3 +11,34 @@
 #####   "dev:start": "nodemon --watch build --exec node \"./build/bundle.js\""   // 把jsx 、es6变成node的可执行的代码
 ##### },
 
+
+
+
+
+##### 规避Promise.all方法涉及到的报错阻塞（一个接口报错，后续都无法进行，页面崩溃）
+##### 方法-：reflect映射
+##### 方法二：Promise.allSettled
+##### https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled
+##### 方法三：包装promise
+
+    /*reflect映射*/
+    const reflect = p => p.then(v => 
+        ({v, status: "fulfilled" }),e => ({e, status: "rejected" })
+    );
+    Promise.all(promises.map(reflect)).then(res => {
+        var success = results.filter(x => x.status === "fulfilled");
+        if (success) {}
+    })
+
+    /*Promise.allSettled*/
+    const promise1 = Promise.resolve(3);
+    const promise2 = new Promise((resolve, reject) => setTimeout(reject, 100, 'foo'));
+    const promises = [promise1, promise2];
+    Promise.allSettled(promises).
+    then((results) => results.forEach((result) => console.log(result.status)));
+
+    /**包装promise*/
+    const promise = new Promise((resolve, reject) => {
+        loadData(store).then(resolve).catch(resolve)
+    })
+    promises.push(promise)
