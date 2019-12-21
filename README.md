@@ -3,7 +3,7 @@
 ##### 启动 npm start
 
 > first homework 
-    /*项目入口文件  package.json*/
+##### 项目入口文件  package.json
     "scripts": { 
         "start": "concurrently \"npm run dev:client\" \"npm run dev:server\" \"npm run       dev:start\"", // 三个服务通过一条命令启动
         "dev:client": "webpack --config webpack.client.js --watch", // 客户端配置
