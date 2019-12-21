@@ -40,8 +40,8 @@
     promises.push(promise)
 
 
-##### fifth homework
-    1.csr实现降级渲染
+------ fifth homework -------
+###### 1.csr实现降级渲染
     if (window.__context) { 
         /*服务端渲染用hydrate  ssr(server side render)*/ 
         ReactDom.hydrate(Page, document.getElementById('root'))
@@ -49,8 +49,8 @@
         /*客户端渲染用render csr(client side render)*/ 
         ReactDom.render(Page, document.getElementById('root'))
     }
-    2.server端实现css组件化渲染
-    https://github.com/kriasoft/isomorphic-style-loader/blob/master/src/withStyles.js
+###### 2.server端实现css组件化渲染 withStyle
+###### https://github.com/kriasoft/isomorphic-style-loader/blob/master/src/withStyles.js
 
 
 
