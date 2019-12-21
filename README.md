@@ -14,7 +14,7 @@
 
 #### 规避Promise.all方法涉及到的报错阻塞（一个接口报错，后续都无法进行，页面崩溃）
 ##### 方法-：reflect映射
- /*reflect映射*/
+    /*reflect映射*/
     const reflect = p => p.then(v => 
         ({v, status: "fulfilled" }),e => ({e, status: "rejected" })
     );
@@ -22,9 +22,10 @@
         var success = results.filter(x => x.status === "fulfilled");
         if (success) {}
     })
+    
 ##### 方法二：Promise.allSettled
 ##### https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled
-  /*Promise.allSettled*/
+    /*Promise.allSettled*/
     const promise1 = Promise.resolve(3);
     const promise2 = new Promise((resolve, reject) => setTimeout(reject, 100, 'foo'));
     const promises = [promise1, promise2];
