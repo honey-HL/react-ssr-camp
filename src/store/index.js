@@ -18,12 +18,19 @@ const changeList = list => ({
 
 
 export const getIndexList = server => {
+    let postData = {
+        category: "frontend",
+        order: "heat",
+        offset: 0,
+        limit: 30
+    }
     return (dispatch, getState, $axios) => {// http://localhost:9090
-        return  $axios.get("/api/course/list")
+        return  $axios.post("/api/resources/gold", postData)
         .then(res => {
-            const {list} = res.data;
-            console.log('24 list=>',list)
-            dispatch(changeList(list))
+            console.log('res', res)
+            const {data} = res.data;
+            console.log('24 list=>',data)
+            dispatch(changeList(data))
         })
     }
 }

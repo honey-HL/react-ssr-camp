@@ -36,7 +36,7 @@ function Index (props) {
         <hr></hr>
         <ul>
             {props.list.map(item => {
-                return <li key={item.id}>{item.name}</li>
+                return <li key={item.id}>{item.title}</li>
             })}
         </ul>
     </div>
@@ -51,3 +51,15 @@ export default connect(
     state => ({list: state.index.list}),
     {getIndexList}
 )(withStyle(Index, styles));
+// withStyle(Index, styles)
+
+
+
+// let NewIndex = connect( 
+//     state => ({list: state.index.list}),
+//     {getIndexList}
+// )(withStyle(Index, styles));
+// NewIndex.loadData = (store) => {
+//     return store.dispatch(getIndexList())
+// }
+// export default NewIndex

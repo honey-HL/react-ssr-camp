@@ -8,8 +8,11 @@ import {Provider} from 'react-redux'
 import {getServerStore} from '../src/store/store'
 import Header from '../src/component/Header'
 import proxy from 'http-proxy-middleware';
+const request = require('request');
 import path from 'path'
 import fs from 'fs'
+import config from './config'
+const axios = require('axios')
 
 
 
@@ -22,10 +25,10 @@ app.use(express.static('public'))
 
 
 // 客户端来的api开头的请求
-app.use(
-    '/api',
-    proxy({ target: 'http://localhost:9090', changeOrigin: true })
-);
+// app.use(
+//     '/api',
+//     proxy({ target: 'http://localhost:9090', changeOrigin: true })
+// );
 
 
 
@@ -38,9 +41,23 @@ function csrRender(res) {
     return res.send(html)
 }
 
+// proxy 中间件的选择项
+var options = {
+    target: 'https://extension-ms.juejin.im', // 目标服务器 host
+    changeOrigin: true,               // 默认false，是否需要改变原始主机头为目标URL
+    ws: true,                         // 是否代理websockets
+    pathRewrite: {
+        '^/api' : '',     // 重写请求，比如我们源访问的是api/old-path，那么请求会被解析为/api/new-path
+    },
+};
+      
+// 创建代理
+ var exampleProxy = proxy(options);
+ app.use('/api', exampleProxy); // 
+
 app.get('*', (req, res) => {
     /*  我们可以：1、配置开关  开启CSR   2、服务器负载过高 开启CSR  **/
-    if (req.query.mode == 'csr') {
+    if (req.query.mode == 'csr' || config.csr) {
         console.log('url参数开启CSR降级')
         return csrRender(res)
     }
